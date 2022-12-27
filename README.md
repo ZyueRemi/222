@@ -210,7 +210,7 @@ static_transform_publisher x y z qx qy qz qw frame_id child_frame_id �
 
 9.4 RsLidar to camera D455 (target-based method 2)
 <div align="center">
-    <img src="pic/A4.png" width = 60% >
+    <img src="pic/A4.png" width = 65% >
     <font color=#a0a0a0 size=2><br></font>
 </div>
 
