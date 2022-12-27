@@ -7,7 +7,7 @@ This tutorial of calibration is for the beginners. We propose a multi-sensor sys
 </div>
 
 ## 2. Prerequisites
-In our repositories, we provide a target-based toolbox based on [lidar_camera_calibrator](https://github.com/HITSZ-NRSL/lidar_camera_calibrator) . We also provide our own sample dataset and calibration result in file /data.
+In our repositories, we provide a target-based toolbox based on [lidar_camera_calibrator](https://github.com/HITSZ-NRSL/lidar_camera_calibrator) . We also provide our own sample dataset and calibration result in the file /data.
 
 ### Dependencies
 
@@ -35,10 +35,11 @@ In our repositories, we provide a target-based toolbox based on [lidar_camera_ca
 
 ```bash
 $ mkdir -p ws_calibrator/src && cd ws_calibrator
-$ git clone REPOSITORY_GIT_LINK src/lidar_camera_calibrator 
+$ git clone git clone REPOSITORY_GIT_LINK src/lidar_camera_calibrator
 $ catkin_make
 ```
 ### Test
+After modify the config file and change the path in /launch
 ```bash
 source ~/ws_calibrator/devel/setup.bash
 roslaunch lidar_camera_calibrator calibrate.launch 
@@ -46,8 +47,9 @@ roslaunch lidar_camera_calibrator calibrate.launch
 
 
 ## 3. Calibration of binocular cameras
-This work is based on MATLAB [Stereo_camera_calibrator](https://www.mathworks.com/help/vision/ref/stereocameracalibrator-app.html)
-3.1 Prepare the chess board and measure the square size. Our sample chessboard is 4.8cmx4.8cm.
+This work is based on MATLAB [Stereo_camera_calibrator](https://www.mathworks.com/help/vision/ref/stereocameracalibrator-app.html)<br>
+3.1 Prepare the chess board and measure the square size. Our sample chessboard is 4.8cmx4.8cm.<br>
+
 3.2 Keep the system stable and record >20 ROS bags containing the  images from the camera D455 and camera L515 
 
 ```
@@ -70,19 +72,21 @@ rosrun image_view extract_images _sec_per_frame:=1 image:=/camera_topic
     <font color=#a0a0a0 size=2><br>Image from L515 camera</font>
 </div>
 
-3.5 Use the [MATLAB toolbox](https://www.mathworks.com/help/vision/ref/stereocameracalibrator-app.html) to calibrate the two cameras
+3.5 Use the [MATLAB toolbox](https://www.mathworks.com/help/vision/ref/stereocameracalibrator-app.html) to calibrate the two cameras<br>
+
 3.6 Remove the image pairs with large error, then the result is optimized.
 
 
 ## 4. Targetless calibration of Livox LiDAR and D455 camera
-This work is based on Targetless [lidar_camera_calib](https://github.com/hku-mars/livox_camera_calib)
-4.1 Set up the environment and follow the steps
+This work is based on Targetless [lidar_camera_calib](https://github.com/hku-mars/livox_camera_calib)<br>
+
+4.1 Set up the environment and follow the steps shown in https://github.com/hku-mars/livox_camera_calib
 
 4.2 Record ROS bag containing Lidar and camera messages for more than 20s to accumulate dense point cloud. Then, change the bag file into pcd file. The tool bag_to_pcd can be found in [lidar_camera_calib](https://github.com/hku-mars/livox_camera_calib). After modify the path config file, we use
 ```
 roslaunch livox_camera_calib bag_to_pcd.launch
 ```
-Then, we can get the accumulated point cloud. Our sample data set is in  /data/livox_camera_targetless. Because limited upload file size, we down sample the uploaded point cloud.
+Then, we can get the accumulated point cloud. Our sample data set is in  /data/livox_camera_targetless. Because of limited uploaded file size, we down sample the point cloud.
 
 4.3 Edit the file path in the yaml file, then run the program and wait the result
 <div align="center">
@@ -155,7 +159,7 @@ This work is based on Target-based [lidar_camera_calibrator](https://github.com/
 ## 6. Target-based calibration of Livox LiDAR and D455 camera
 6.1 Our sample data set is in file /data/livox_camera
 
-6.2 The steps are the same as above. We stable the system and record rosbag 1~2 seconds. Then obtain the accumulated pcd file from the bag. Finally, we use the toolbox and calibrate the dense LiDAR.
+6.2 The steps are the same as above. We stable the system and record rosbag 1~2 seconds. Then, obtain the accumulated pcd file from the bag. Finally, we use the toolbox and calibrate the dense LiDAR.
 <div align="center">
     <img src="pic/14.png" width = 40% >
     <font color=#a0a0a0 size=2><br>Target pose</font>
@@ -167,10 +171,11 @@ This work is based on Target-based [lidar_camera_calibrator](https://github.com/
 
 
 ## 7. Target-based calibration using MATLAB toolbox
-This method is based on MATLAB [Lidar_camera_calibrator](https://www.mathworks.com/help/lidar/ug/lidar-and-camera-calibration.html)
+This method is based on MATLAB [Lidar_camera_calibrator](https://www.mathworks.com/help/lidar/ug/lidar-and-camera-calibration.html)<br>
+
 7.1 Prepare a chessboard and measure the size of it. The size of chessboard  square in this experiment is 10.7cmx10.7cm with 0.6cm boarder to pad.
 
-7.2 To get the input pcd and image files. Same step as shown in 4. Our sample data set is in file /data/rslidar_camera_matlab
+7.2 To get the input pcd and image files. Same step as shown in 5.2. Our sample data set is in file /data/rslidar_camera_matlab
 
 7.3 Input data in MATLAB. The image corner and LiDAR point cloud target plane can be detected.
 <div align="center">
