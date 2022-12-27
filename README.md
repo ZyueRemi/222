@@ -2,7 +2,7 @@
 ## 1. Introduction
 This tutorial of calibration is for the beginners. We propose a multi-sensor system on a car and implement the state-of-art calibration methods. The steps and results are shown below.
 <div align="center">
-    <img src="pic/1.jpg" width = 100% >
+    <img src="pic/1.jpg" width = 50% >
     <font color=#a0a0a0 size=2>(a) Proposed multi-sensor system (b) Robosense bpearl blind spot LiDAR (c) Livox Avia solite-state dense LiDAR (d) Intel Realsense D455 depth camera (e) Intel Realsense L515 depth camera</font>
 </div>
 
