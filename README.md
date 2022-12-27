@@ -1,15 +1,15 @@
 # Calibration_Tutorial
 ## 1. Introduction
-This tutorial of calibration is for the beginners. We propose a multi-sensor system on a car and implement the state-of-art calibration methods. The steps and results are shown below.
+This tutorial of calibration is for the beginners. We propose a multi-sensor system on a car and implement the state-of-art calibration methods. The steps and results are discribed in details.
 <div align="center">
-    <img src="pic/1.jpg" width = 40% >  
+    <img src="pic/1.jpg" width = 40% >
     <font color=#a0a0a0 size=2><br>(a) Proposed multi-sensor system (b) Robosense bpearl blind spot LiDAR (c) Livox Avia solite-state dense LiDAR (d) Intel Realsense D455 depth camera (e) Intel Realsense L515 depth camera</font>
 </div>
 
 
 ## 2. Calibration of binocular cameras
 This work is based on [MATLAB_Stereo_camera_calibrator](https://www.mathworks.com/help/vision/ref/stereocameracalibrator-app.html)
-1. Prepare the chess board and measure the square size
+1. Prepare the chess board and measure the square size. Our sample chessboard is 4.8cmx4.8cm.
 2. Keep the system stable and record >20 ROS bags containing the  images from the camera D455 and camera L515 
 
 ```
@@ -18,7 +18,7 @@ rosbag record -O xxx.bag /camera_topic1 /camera_topic2
 
 3. Extract images from the bags (run the command below and play the rosbag)
 ```
-rosrun image_view extract_images _sec_per_frame:=0.5 image:=/camera_topic
+rosrun image_view extract_images _sec_per_frame:=1 image:=/camera_topic
 ```
 4. After repeating the steps above, we get >20 pairs of macthed images. Our sample data is in /data/binocular
 
@@ -32,19 +32,19 @@ rosrun image_view extract_images _sec_per_frame:=0.5 image:=/camera_topic
     <font color=#a0a0a0 size=2><br>Image from L515 camera</font>
 </div>
 
-5. Use the MATLAB toolbox to calibrate the two cameras
-6. Remove the image pairs with large error
+5. Use the [MATLAB toolbox](https://www.mathworks.com/help/vision/ref/stereocameracalibrator-app.html) to calibrate the two cameras
+6. Remove the image pairs with large error, then the result is optimized.
 
 
 ## 3. Targetless calibration of Livox LiDAR and D455 camera
-This work is based on [Targetless lidar_camera_calib](https://github.com/hku-mars/livox_camera_calib)
-1. Set up the environment and follow the [steps](https://github.com/hku-mars/livox_camera_calib)
+This work is based on Targetless [lidar_camera_calib](https://github.com/hku-mars/livox_camera_calib)
+1. Set up the environment and follow the steps
 
-2. Record ROS bag containing Lidar and camera messages for more than 20s to accumulate dense point cloud. Then, change the bag file into pcd file. The tool bag_to_pcd can be found in[Targetless lidar_camera_calib](https://github.com/hku-mars/livox_camera_calib). After modify the path config file,
+2. Record ROS bag containing Lidar and camera messages for more than 20s to accumulate dense point cloud. Then, change the bag file into pcd file. The tool bag_to_pcd can be found in [lidar_camera_calib](https://github.com/hku-mars/livox_camera_calib). After modify the path config file, we use
 ```
 roslaunch livox_camera_calib bag_to_pcd.launch
 ```
-We can get the accumulated point cloud. Our sample data set is in  /data/livox_camera_targetless. Because limited upload file size, we down sample the uploaded point cloud.
+Then, we can get the accumulated point cloud. Our sample data set is in  /data/livox_camera_targetless. Because limited upload file size, we down sample the uploaded point cloud.
 
 3. Edit the file path in the yaml file, then run the program and wait the result
 <div align="center">
@@ -66,13 +66,13 @@ We can get the accumulated point cloud. Our sample data set is in  /data/livox_c
     <font color=#a0a0a0 size=2><br>Projection of point cloud onto the image using calibrated extrinsic matrix</font>
 </div>
  
-5. Multi-scene calibration
-The targetless method needs scene with rich edge features. If not, the calibration result will be false because of false matched edges.
+5. Multi-scene calibration<br>
+The targetless method needs scene with rich edge features. If not, the calibration result will be bad because of false matched edges.
 <div align="center">
     <img src="pic/8.png" width = 40% >
     <font color=#a0a0a0 size=2><br>False matched edge leading to bad calibration result</font>
 </div>
-When use multi-scene to do the calibration, the problem can be allievated.
+When use multi-scenes to do the calibration, the problem can be allievated.
 <div align="center">
     <img src="pic/9.png" width = 40% >
     <font color=#a0a0a0 size=2><br>After multi-scene calibration result</font>
@@ -80,7 +80,7 @@ When use multi-scene to do the calibration, the problem can be allievated.
  
 
 ## 4. Target-based calibration of RsLiDAR and D455 camera
-This work is based on [Target-based lidar_camera_calibrator](https://github.com/HITSZ-NRSL/lidar_camera_calibrator)
+This work is based on Target-based [lidar_camera_calibrator](https://github.com/HITSZ-NRSL/lidar_camera_calibrator)
 
 1. Prepare calibration board
 <div align="center">
@@ -88,7 +88,7 @@ This work is based on [Target-based lidar_camera_calibrator](https://github.com/
     <font color=#a0a0a0 size=2><br>Calibration board target</font>
 </div>
 
-2. We uphold the target and record the ROS bag. Then extract pcd files and images from the bag. We use get_sync_data.launch in our repository to ensure the pcd and image obtained are sychronized. Our sample data set is in file /data/rslidar_camera
+2. We uphold the target and record the ROS bag. Then, extract pcd files and images from the bag. We use get_sync_data.launch in our repository to ensure the pcd and image obtained are sychronized. Our sample data set is in file /data/rslidar_camera
 
 3. Select corner points of the target manually, by clicking on the image viewer
 <div align="center">
@@ -97,6 +97,11 @@ This work is based on [Target-based lidar_camera_calibrator](https://github.com/
 </div>
 
 4. Select the ROI from the LiDAR point cloud by adjusting the parameters in the UI
+<div align="center">
+    <img src="pic/19.png" width =40% >
+    <font color=#a0a0a0 size=2><br>UI to find ROI</font>
+</div>
+
 <div align="center">
     <img src="pic/18.png" width =25% >
     <font color=#a0a0a0 size=2><br>Corner points of the target in the point cloud</font>
@@ -124,7 +129,7 @@ This work is based on [Target-based lidar_camera_calibrator](https://github.com/
 
 
 ## 6. Target-based calibration using MATLAB toolbox
-This method is based on [MATLAB_Lidar_camera_calibrator](https://www.mathworks.com/help/lidar/ug/lidar-and-camera-calibration.html)
+This method is based on MATLAB [Lidar_camera_calibrator](https://www.mathworks.com/help/lidar/ug/lidar-and-camera-calibration.html)
 1. Prepare a chessboard and measure the size of it. The size of chessboard  square in this experiment is 10.7cmx10.7cm with 0.6cm boarder to pad.
 
 2. To get the input pcd and image files. Same step as shown in 4. Our sample data set is in file /data/rslidar_camera_matlab
@@ -148,6 +153,29 @@ static_transform_publisher x y z qx qy qz qw frame_id child_frame_id �
 ```
 
 ## 8. Calibration results for reference
+1. Livox Lidar to camera D455 (targetless method)
+<div align="center">
+    <img src="pic/A1.png" width = 60% >
+    <font color=#a0a0a0 size=2><br></font>
+</div>
+2. RsLidar to camera D455 (target-based method 1)
+<div align="center">
+    <img src="pic/A2.png" width = 60% >
+    <font color=#a0a0a0 size=2><br></font>
+</div>
+
+3.Livox Lidar to camera D455 (target-based method 1)
+<div align="center">
+    <img src="pic/A3.png" width = 60% >
+    <font color=#a0a0a0 size=2><br></font>
+</div>
+
+4.RsLidar to camera D455 (target-based method 2)
+<div align="center">
+    <img src="pic/A4.png" width = 60% >
+    <font color=#a0a0a0 size=2><br></font>
+</div>
+
 
 ## 9. References
 [1] Z. Zhang, "A flexible new technique for camera calibration," in IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. 22, no. 11, pp. 1330-1334, Nov. 2000, doi: 10.1109/34.888718.
